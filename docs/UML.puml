@@ -1,0 +1,90 @@
+@startuml Chatterbox
+title Chatterbox - Class Diagram (6 design patterns)
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Factory Method (Nurzhau)" {
+  abstract class MessageCreator {
+    + create(roomId, author, content) : Message
+    # {abstract} createMessage(roomId, author, content) : Message
+  }
+  class TextMessageCreator
+  class ImageMessageCreator
+  class SystemMessageCreator
+  class MessageCreatorProvider { + forType(MessageType) : MessageCreator }
+  MessageCreator <|-- TextMessageCreator
+  MessageCreator <|-- ImageMessageCreator
+  MessageCreator <|-- SystemMessageCreator
+  MessageCreatorProvider o-- MessageCreator
+}
+
+package "Decorator (Nurzhau)" {
+  interface MessageView { + render() : String \n + tags() : List<String> }
+  class PlainMessageView
+  abstract class MessageDecorator { # wrapped : MessageView }
+  class EmojiDecorator
+  class LoggingDecorator
+  class EncryptionDecorator { + {static} decrypt(String) : String }
+  MessageView <|.. PlainMessageView
+  MessageView <|.. MessageDecorator
+  MessageDecorator o-- MessageView
+  MessageDecorator <|-- EmojiDecorator
+  MessageDecorator <|-- LoggingDecorator
+  MessageDecorator <|-- EncryptionDecorator
+}
+
+package "Adapter (Nursultan)" {
+  interface "ProtocolAdapter<T>" as ProtocolAdapter { + adapt(T) : IncomingMessage }
+  class RestProtocolAdapter
+  class XmppProtocolAdapter
+  class RestPayload <<adaptee>>
+  class XmppStanza <<adaptee>>
+  class IncomingMessage <<record>>
+  ProtocolAdapter <|.. RestProtocolAdapter
+  ProtocolAdapter <|.. XmppProtocolAdapter
+  RestProtocolAdapter ..> RestPayload
+  XmppProtocolAdapter ..> XmppStanza
+  ProtocolAdapter ..> IncomingMessage
+}
+
+package "Strategy (Nursultan)" {
+  interface MessageSortStrategy { + sort(List<Message>) : List<Message> }
+  class OldestFirstStrategy
+  class NewestFirstStrategy
+  class AuthorStrategy
+  class MessageHistory { + setStrategy(key) \n + arrange(List<Message>) }
+  MessageSortStrategy <|.. OldestFirstStrategy
+  MessageSortStrategy <|.. NewestFirstStrategy
+  MessageSortStrategy <|.. AuthorStrategy
+  MessageHistory o-- MessageSortStrategy
+}
+
+package "Observer (Gabidin)" {
+  interface ChatObserver { + onEvent(ChatEvent) }
+  class ChatEventPublisher { + subscribe() \n + unsubscribe() \n + publish(ChatEvent) }
+  class ConsoleLogObserver
+  class UnreadCounterObserver
+  class LiveUpdateObserver
+  ChatEventPublisher o-- ChatObserver
+  ChatObserver <|.. ConsoleLogObserver
+  ChatObserver <|.. UnreadCounterObserver
+  ChatObserver <|.. LiveUpdateObserver
+}
+
+package "Facade (Gabidin)" {
+  class ChatFacade {
+    + createRoom() \n + send() \n + receiveRest() \n + receiveXmpp() \n + history() \n + stats()
+  }
+}
+
+class ChatController
+class Message
+ChatController --> ChatFacade
+ChatFacade --> MessageCreatorProvider
+ChatFacade ..> MessageView
+ChatFacade --> RestProtocolAdapter
+ChatFacade --> XmppProtocolAdapter
+ChatFacade ..> MessageHistory
+ChatFacade --> ChatEventPublisher
+MessageCreator ..> Message
+@enduml
