@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Core chat message. Created only through the Factory Method creators. */
 public class Message {
     private Long id;
     private final String roomId;

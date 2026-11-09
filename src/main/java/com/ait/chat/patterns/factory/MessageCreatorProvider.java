@@ -5,7 +5,6 @@ import com.ait.chat.model.MessageType;
 import java.util.EnumMap;
 import java.util.Map;
 
-/** Returns the concrete creator for a message type. */
 public class MessageCreatorProvider {
     private final Map<MessageType, MessageCreator> creators = new EnumMap<>(MessageType.class);
 

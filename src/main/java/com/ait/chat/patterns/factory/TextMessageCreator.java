@@ -3,7 +3,6 @@ package com.ait.chat.patterns.factory;
 import com.ait.chat.model.Message;
 import com.ait.chat.model.MessageType;
 
-/** FACTORY METHOD - Concrete creator for plain text messages. */
 public class TextMessageCreator extends MessageCreator {
     public static final int MAX_LENGTH = 1000;
 
