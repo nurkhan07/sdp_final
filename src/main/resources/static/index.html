@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatterbox — SDP Final Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">💬</div>
+            <div>
+                <h1>Chatterbox</h1>
+                <small>6 design patterns · Topic 14</small>
+            </div>
+        </div>
+
+        <label class="field">
+            <span>Your name</span>
+            <input id="username" placeholder="e.g. Nurzhau" maxlength="30">
+        </label>
+
+        <div class="section-title">Rooms <span class="hint">Observer: unread badges</span></div>
+        <ul id="roomList" class="room-list"></ul>
+
+        <form id="roomForm" class="room-form">
+            <input id="roomName" placeholder="New room name" required>
+            <button type="submit" title="Create room">+</button>
+        </form>
+
+        <div class="section-title">Live activity <span id="liveDot" class="dot off"></span></div>
+        <ul id="activity" class="activity"></ul>
+    </aside>
+
+    <main class="chat">
+        <header class="chat-header">
+            <div>
+                <h2 id="roomTitle">Select a room</h2>
+                <p id="roomDesc" class="muted"></p>
+            </div>
+            <label class="sort">
+                <span>Sort (Strategy)</span>
+                <select id="sortSelect">
+                    <option value="oldest">Oldest first</option>
+                    <option value="newest">Newest first</option>
+                    <option value="author">By author</option>
+                </select>
+            </label>
+        </header>
+
+        <section id="messages" class="messages">
+            <div class="empty">Choose a room on the left to start chatting.</div>
+        </section>
+
+        <form id="composer" class="composer">
+            <select id="msgType" title="Factory Method: message type">
+                <option value="TEXT">Text</option>
+                <option value="IMAGE">Image URL</option>
+                <option value="SYSTEM">System</option>
+            </select>
+            <input id="msgInput" placeholder="Type a message… try :) :fire: <3" autocomplete="off">
+            <label class="toggle" title="Decorator: EmojiDecorator"><input type="checkbox" id="optEmoji" checked> 😊</label>
+            <label class="toggle" title="Decorator: EncryptionDecorator"><input type="checkbox" id="optEncrypt"> 🔒</label>
+            <button type="submit">Send</button>
+        </form>
+        <div id="error" class="error hidden"></div>
+    </main>
+
+    <aside class="panel">
+        <div class="card">
+            <h3>External protocols <small>Adapter</small></h3>
+            <div class="tabs">
+                <button class="tab active" data-proto="rest">REST JSON</button>
+                <button class="tab" data-proto="xmpp">XMPP XML</button>
+            </div>
+            <textarea id="externalPayload" rows="7"></textarea>
+            <button id="sendExternal" class="wide">Receive into chat</button>
+        </div>
+
+        <div class="card">
+            <h3>Statistics <small>Facade</small></h3>
+            <div id="stats" class="stats"></div>
+        </div>
+
+        <div class="card patterns">
+            <h3>Patterns in this app</h3>
+            <ul>
+                <li><b>Factory Method</b> — Text / Image / System creators <i>Nurzhau</i></li>
+                <li><b>Decorator</b> — Emoji, Logging, Encryption <i>Nurzhau</i></li>
+                <li><b>Adapter</b> — REST &amp; XMPP → chat message <i>Nursultan</i></li>
+                <li><b>Strategy</b> — Oldest / Newest / Author sort <i>Nursultan</i></li>
+                <li><b>Observer</b> — log, unread counter, live SSE <i>Gabidin</i></li>
+                <li><b>Facade</b> — ChatFacade, single entry point <i>Gabidin</i></li>
+            </ul>
+        </div>
+    </aside>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
