@@ -2,6 +2,7 @@
 title Chatterbox - Class Diagram (6 design patterns)
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
+left to right direction
 
 package "Factory Method (Nurzhau)" {
   abstract class MessageCreator {
@@ -11,7 +12,9 @@ package "Factory Method (Nurzhau)" {
   class TextMessageCreator
   class ImageMessageCreator
   class SystemMessageCreator
-  class MessageCreatorProvider { + forType(MessageType) : MessageCreator }
+  class MessageCreatorProvider {
+    + forType(type : MessageType) : MessageCreator
+  }
   MessageCreator <|-- TextMessageCreator
   MessageCreator <|-- ImageMessageCreator
   MessageCreator <|-- SystemMessageCreator
@@ -19,12 +22,19 @@ package "Factory Method (Nurzhau)" {
 }
 
 package "Decorator (Nurzhau)" {
-  interface MessageView { + render() : String \n + tags() : List<String> }
+  interface MessageView {
+    + render() : String
+    + tags() : List<String>
+  }
   class PlainMessageView
-  abstract class MessageDecorator { # wrapped : MessageView }
+  abstract class MessageDecorator {
+    # wrapped : MessageView
+  }
   class EmojiDecorator
   class LoggingDecorator
-  class EncryptionDecorator { + {static} decrypt(String) : String }
+  class EncryptionDecorator {
+    + {static} decrypt(cipher : String) : String
+  }
   MessageView <|.. PlainMessageView
   MessageView <|.. MessageDecorator
   MessageDecorator o-- MessageView
@@ -34,7 +44,10 @@ package "Decorator (Nurzhau)" {
 }
 
 package "Adapter (Nursultan)" {
-  interface "ProtocolAdapter<T>" as ProtocolAdapter { + adapt(T) : IncomingMessage }
+  interface ProtocolAdapter<T> {
+    + protocolName() : String
+    + adapt(payload : T) : IncomingMessage
+  }
   class RestProtocolAdapter
   class XmppProtocolAdapter
   class RestPayload <<adaptee>>
@@ -48,11 +61,17 @@ package "Adapter (Nursultan)" {
 }
 
 package "Strategy (Nursultan)" {
-  interface MessageSortStrategy { + sort(List<Message>) : List<Message> }
+  interface MessageSortStrategy {
+    + key() : String
+    + sort(messages : List<Message>) : List<Message>
+  }
   class OldestFirstStrategy
   class NewestFirstStrategy
   class AuthorStrategy
-  class MessageHistory { + setStrategy(key) \n + arrange(List<Message>) }
+  class MessageHistory {
+    + setStrategy(key : String)
+    + arrange(messages : List<Message>) : List<Message>
+  }
   MessageSortStrategy <|.. OldestFirstStrategy
   MessageSortStrategy <|.. NewestFirstStrategy
   MessageSortStrategy <|.. AuthorStrategy
@@ -60,8 +79,14 @@ package "Strategy (Nursultan)" {
 }
 
 package "Observer (Gabidin)" {
-  interface ChatObserver { + onEvent(ChatEvent) }
-  class ChatEventPublisher { + subscribe() \n + unsubscribe() \n + publish(ChatEvent) }
+  interface ChatObserver {
+    + onEvent(event : ChatEvent)
+  }
+  class ChatEventPublisher {
+    + subscribe(observer : ChatObserver)
+    + unsubscribe(observer : ChatObserver)
+    + publish(event : ChatEvent)
+  }
   class ConsoleLogObserver
   class UnreadCounterObserver
   class LiveUpdateObserver
@@ -73,12 +98,18 @@ package "Observer (Gabidin)" {
 
 package "Facade (Gabidin)" {
   class ChatFacade {
-    + createRoom() \n + send() \n + receiveRest() \n + receiveXmpp() \n + history() \n + stats()
+    + createRoom(name, description) : ChatRoom
+    + send(roomId, request) : Message
+    + receiveRest(payload) : Message
+    + receiveXmpp(xml) : Message
+    + history(roomId, sort) : List<Message>
+    + stats() : Map
   }
 }
 
 class ChatController
 class Message
+
 ChatController --> ChatFacade
 ChatFacade --> MessageCreatorProvider
 ChatFacade ..> MessageView
