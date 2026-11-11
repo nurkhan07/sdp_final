@@ -56,7 +56,7 @@ public class ChatFacade {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Room name is required");
         }
-        String id = name.trim().toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]+", "-").replaceAll("(^-|-$)", "");
+        String id = name.trim().toLowerCase(Locale.ROOT).replaceAll("[^\\p{L}\\p{N}]+", "-").replaceAll("(^-|-$)", "");
         if (id.isEmpty()) {
             throw new IllegalArgumentException("Room name must contain letters or digits");
         }

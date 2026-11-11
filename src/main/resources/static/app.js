@@ -46,14 +46,14 @@ async function openRoom(id) {
     const room = state.rooms.find(r => r.id === id);
     $('roomTitle').textContent = room ? '# ' + room.name : id;
     $('roomDesc').textContent = room ? room.description : '';
-    await api(`/rooms/${id}/read`, {method: 'POST'});
+    await api(`/rooms/${encodeURIComponent(id)}/read`, {method: 'POST'});
     await Promise.all([loadMessages(), loadRooms()]);
 }
 
 async function loadMessages() {
     if (!state.room) return;
     const sort = $('sortSelect').value;
-    const msgs = await api(`/rooms/${state.room}/messages?sort=${sort}`);
+    const msgs = await api(`/rooms/${encodeURIComponent(state.room)}/messages?sort=${sort}`);
     const box = $('messages');
     const me = $('username').value.trim();
     box.innerHTML = msgs.length ? '' : '<div class="empty">No messages yet — say hi!</div>';
@@ -100,7 +100,7 @@ $('composer').addEventListener('submit', async e => {
     const content = $('msgInput').value.trim();
     if (!content) return;
     try {
-        await api(`/rooms/${state.room}/messages`, {
+        await api(`/rooms/${encodeURIComponent(state.room)}/messages`, {
             method: 'POST',
             body: JSON.stringify({
                 author: $('username').value.trim() || 'Anonymous',
@@ -173,7 +173,7 @@ function connectLive() {
         if (ev.type === 'MESSAGE_SENT') {
             logActivity(`${ev.author} → #${ev.roomId} (${ev.protocol})`);
             if (ev.roomId === state.room) {
-                await api(`/rooms/${state.room}/read`, {method: 'POST'});
+                await api(`/rooms/${encodeURIComponent(state.room)}/read`, {method: 'POST'});
                 loadMessages();
             }
         } else if (ev.type === 'ROOM_CREATED') {
