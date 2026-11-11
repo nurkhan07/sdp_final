@@ -1,8 +1,6 @@
 package com.ait.chat.patterns.adapter;
 
-/** ADAPTER - XMPP stanza -> IncomingMessage ("alice@jabber.org" -> "alice", "general@host" -> "general"). */
 public class XmppProtocolAdapter implements ProtocolAdapter<String> {
-
     @Override
     public String protocolName() {
         return "XMPP";

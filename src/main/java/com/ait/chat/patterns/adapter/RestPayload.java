@@ -1,6 +1,5 @@
 package com.ait.chat.patterns.adapter;
 
-/** ADAPTEE - JSON body of a third-party REST chat API (different field names). */
 public class RestPayload {
     private String sender;
     private String channel;

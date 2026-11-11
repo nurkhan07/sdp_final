@@ -1,8 +1,6 @@
 package com.ait.chat.patterns.adapter;
 
-/** ADAPTER - REST JSON payload -> IncomingMessage. */
 public class RestProtocolAdapter implements ProtocolAdapter<RestPayload> {
-
     @Override
     public String protocolName() {
         return "REST";

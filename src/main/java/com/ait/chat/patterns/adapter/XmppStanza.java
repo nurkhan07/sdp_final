@@ -3,10 +3,6 @@ package com.ait.chat.patterns.adapter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * ADAPTEE - simplified XMPP message stanza, e.g.
- * &lt;message from="alice@jabber.org" to="general@chatterbox"&gt;&lt;body&gt;Hi&lt;/body&gt;&lt;/message&gt;
- */
 public class XmppStanza {
     private static final Pattern FROM = Pattern.compile("from=\"([^\"]*)\"");
     private static final Pattern TO = Pattern.compile("to=\"([^\"]*)\"");
