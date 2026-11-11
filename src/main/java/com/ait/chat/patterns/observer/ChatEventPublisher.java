@@ -3,7 +3,6 @@ package com.ait.chat.patterns.observer;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/** OBSERVER - Subject: keeps the list of observers and notifies them. */
 public class ChatEventPublisher {
     private final List<ChatObserver> observers = new CopyOnWriteArrayList<>();
 

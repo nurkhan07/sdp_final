@@ -2,7 +2,6 @@ package com.ait.chat.patterns.observer;
 
 import com.ait.chat.model.Message;
 
-/** OBSERVER - event sent from the subject to every subscribed observer. */
 public record ChatEvent(Type type, String roomId, Message message, String info) {
     public enum Type { MESSAGE_SENT, ROOM_CREATED, ROOM_READ }
 

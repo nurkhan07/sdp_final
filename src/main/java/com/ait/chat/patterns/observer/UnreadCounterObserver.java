@@ -3,7 +3,6 @@ package com.ait.chat.patterns.observer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** OBSERVER - counts unread messages per room; reset when a room is read. */
 public class UnreadCounterObserver implements ChatObserver {
     private final Map<String, Integer> unread = new ConcurrentHashMap<>();
 

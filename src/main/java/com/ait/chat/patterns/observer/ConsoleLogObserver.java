@@ -3,7 +3,6 @@ package com.ait.chat.patterns.observer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** OBSERVER - prints every chat event to the server log. */
 public class ConsoleLogObserver implements ChatObserver {
     private static final Logger log = LoggerFactory.getLogger(ConsoleLogObserver.class);
 

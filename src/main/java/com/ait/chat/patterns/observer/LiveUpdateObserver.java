@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/** OBSERVER - pushes every event to connected browsers through Server-Sent Events. */
 public class LiveUpdateObserver implements ChatObserver {
     private final List<SseEmitter> clients = new CopyOnWriteArrayList<>();
 
